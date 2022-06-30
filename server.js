@@ -10,7 +10,7 @@ import postRouter from "./routes/postRouter.js"
 const app = express();
 config();
 const uri = process.env.MONGODB_URI;
-const PORT = process.env.PORT || 3333;
+const PORT = process.env.PORT || 3000;
 mongoose.connect(
   uri,
   {

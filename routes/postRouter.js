@@ -5,12 +5,8 @@ const postRouter = express.Router();
 postRouter.get("/", async (req, res) => {
   try {
     const allProducts = await productModel.find({});
-    if (
-      allProducts == null ||
-      allProducts == false ||
-      allProducts == undefined
-    ) {
-      return res.status(404).json("Não há produto nenhum!");
+    if ( allProducts == null ) {
+      return res.status(404).json("There is no product!");
     }
     res.status(200).json({ products: allProducts });
   } catch (err) {
