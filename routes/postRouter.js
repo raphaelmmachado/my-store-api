@@ -1,11 +1,17 @@
+/*dependencies*/
 import express from "express";
+
+/*local*/
 import productModel from "../models/Product.js";
+
+import { cloudinaryMiddleware } from "../controllers/cloudinaryMiddleware.js";
 const postRouter = express.Router();
+
 //all
 postRouter.get("/", async (req, res) => {
   try {
     const allProducts = await productModel.find({});
-    if ( allProducts == null ) {
+    if (allProducts == null) {
       return res.status(404).json("There is no product!");
     }
     res.status(200).json({ products: allProducts });
@@ -56,7 +62,7 @@ postRouter.delete("/product/:id", async (req, res) => {
   }
 });
 // post
-postRouter.post("/post", async (req, res) => {
+postRouter.post("/post", cloudinaryMiddleware, async (req, res) => {
   const newProduct = new productModel({
     author: req.body.authorID,
     title: req.body.title,
@@ -69,24 +75,26 @@ postRouter.post("/post", async (req, res) => {
     const savedProduct = await newProduct.save();
     res.status(200).json(savedProduct);
   } catch (error) {
-    res.status(400).json({ message: "Error trying to post product!", error:error });
+    res
+      .status(400)
+      .json({ message: "Error trying to post product!", error: error });
   }
 });
 //patch
 postRouter.patch("/product/:id", async (req, res) => {
   let newProduct = {};
   const { author, title, image, description, quantity, price } = req.body;
-  if (author !== null) newProduct.author = author
-  if (title !== null) newProduct.title = title
-  if (image !== null) newProduct.image = image
-  if (description !== null) newProduct.description = description
-  if (quantity !== null) newProduct.quantity = quantity
-  if (price !== null) newProduct.price = price
-    try {
-        await productModel.findByIdAndUpdate(req.params.id, newProduct)
-        res.status(200).json({message: "Product patched!"})
-    } catch (error) {
-        res.status(400).json({message:"Error trying to patch", error:error})
-    }
+  if (author !== null) newProduct.author = author;
+  if (title !== null) newProduct.title = title;
+  if (image !== null) newProduct.image = image;
+  if (description !== null) newProduct.description = description;
+  if (quantity !== null) newProduct.quantity = quantity;
+  if (price !== null) newProduct.price = price;
+  try {
+    await productModel.findByIdAndUpdate(req.params.id, newProduct);
+    res.status(200).json({ message: "Product patched!" });
+  } catch (error) {
+    res.status(400).json({ message: "Error trying to patch", error: error });
+  }
 });
 export default postRouter;
