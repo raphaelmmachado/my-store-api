@@ -81,7 +81,7 @@ postRouter.post("/post", cloudinaryMiddleware, async (req, res) => {
   }
 });
 //patch
-postRouter.patch("/product/:id", async (req, res) => {
+postRouter.patch("/product/:id", cloudinaryMiddleware, async (req, res) => {
   let newProduct = {};
   const { author, title, image, description, quantity, price } = req.body;
   if (author !== null) newProduct.author = author;
