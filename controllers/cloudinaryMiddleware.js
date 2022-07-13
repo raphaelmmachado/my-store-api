@@ -15,7 +15,6 @@ async function cloudinaryMiddleware(req, res, next) {
       (err, result) => {
         if (err) console.log(err);
        req.body.image = result.secure_url
-       console.log({public_id: result.public_id});
       }
     );
     next();

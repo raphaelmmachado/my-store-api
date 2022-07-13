@@ -1,4 +1,4 @@
-import express, { application } from "express";
+import express from "express";
 import { config } from "dotenv";
 import mongoose from "mongoose";
 import { ServerApiVersion } from "mongodb";
